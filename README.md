@@ -1,75 +1,79 @@
 # Mobile Farmers Market
 
-Aplikasi Flutter untuk membantu pelanggan memesan produk pasar tani secara online, dan membantu vendor mengelola profil serta produk.
+Aplikasi Flutter untuk membantu pelanggan memesan produk pasar tani secara online, sekaligus membantu vendor mengelola profil dan produk.
 
-## Ringkasan Fitur
-- Login dan signup berbasis Firebase Authentication.
-- Data user, vendor, market, dan produk menggunakan Cloud Firestore.
+## Fitur Utama
+- Autentikasi email/password menggunakan Firebase Authentication.
+- Penyimpanan data menggunakan Cloud Firestore.
+- Upload gambar produk dan vendor menggunakan Firebase Storage.
 - Vendor dapat:
-  - membuat/mengubah profil,
+  - menambah/mengubah profil,
   - menambah/mengubah produk,
-  - upload foto produk/vendor.
-- Pelanggan dapat melihat daftar market yang akan datang dan produk yang tersedia.
+  - mengelola informasi stok dan harga.
+- Pelanggan dapat:
+  - melihat market yang akan datang,
+  - melihat daftar produk yang tersedia.
 
 ## Status Proyek
-Proyek ini berasal dari seri tutorial lama dan masih menggunakan dependensi versi legacy.
+Proyek ini sudah dimigrasikan ke stack Flutter modern.
 
-Kondisi saat ini:
-- Kode sudah diperbaiki untuk beberapa bug UI/UX dan validasi input.
-- Struktur project tetap dipertahankan agar kompatibel dengan implementasi awal.
-- Untuk menjalankan pada Flutter/Dart terbaru, diperlukan migrasi dependensi Firebase + null safety secara menyeluruh.
+Status saat ini:
+- Sudah menggunakan null safety.
+- Dependensi utama Firebase sudah diperbarui.
+- Struktur UI/UX sudah dirapikan.
+- Validasi input dan alur form sudah diperkuat.
+- `flutter analyze` sudah bersih (No issues found).
 
-## Perbaikan Terbaru
-Perbaikan yang sudah diterapkan:
-- Memperbaiki bug struktur widget di `lib/src/widgets/card.dart` yang menyebabkan error build.
-- Merapikan `lib/src/widgets/products.dart` (menghapus kode duplikat/konflik dan memperjelas state loading/empty).
-- Menambahkan hardening validasi input di:
-  - `lib/src/blocs/product_bloc.dart`
-  - `lib/src/blocs/vendor_bloc.dart`
-- Meningkatkan ketahanan model vendor terhadap data null di `lib/src/models/vendor.dart`.
-- Menambahkan guard callback null pada `lib/src/widgets/textfield.dart`.
-- Menambahkan guard `userId` null pada `lib/src/blocs/auth_bloc.dart`.
+## Teknologi
+- Flutter
+- Dart
+- Firebase Core
+- Firebase Auth
+- Cloud Firestore
+- Firebase Storage
+- Provider
+- RxDart
 
-## Struktur Folder Utama
+## Struktur Folder
 - `lib/main.dart`: entry point aplikasi.
-- `lib/src/app.dart`: konfigurasi app, provider, dan routing utama.
-- `lib/src/blocs/`: business logic (auth, customer, product, vendor).
-- `lib/src/models/`: model data aplikasi.
-- `lib/src/screens/`: halaman utama (login, signup, landing, edit).
+- `lib/src/app.dart`: konfigurasi aplikasi dan provider.
+- `lib/src/routes.dart`: routing aplikasi.
+- `lib/src/blocs/`: business logic (auth, product, vendor, customer).
+- `lib/src/models/`: model data.
+- `lib/src/screens/`: halaman aplikasi.
 - `lib/src/widgets/`: komponen UI reusable.
-- `lib/src/services/`: integrasi Firestore dan Firebase Storage.
-- `lib/src/styles/`: konfigurasi gaya, warna, teks, dan tombol.
+- `lib/src/services/`: integrasi Firebase.
+- `lib/src/styles/`: konfigurasi tema dan gaya UI.
 
 ## Prasyarat
-- Flutter SDK (sesuai versi dependensi project).
-- Dart SDK.
-- Firebase project aktif (Android + iOS app sudah didaftarkan).
+- Flutter SDK terbaru.
+- Dart SDK (mengikuti versi Flutter).
+- Proyek Firebase aktif.
 
-Catatan penting kompatibilitas:
-- `pubspec.yaml` saat ini masih mengarah ke dependency lama.
-- Jika menggunakan Flutter terbaru, jalankan migrasi bertahap sebelum build production.
+## Setup Firebase
+1. Buat project di Firebase Console.
+2. Tambahkan aplikasi Android dan iOS.
+3. Aktifkan layanan berikut:
+   - Authentication (Email/Password)
+   - Cloud Firestore
+   - Firebase Storage
+4. Letakkan file konfigurasi:
+   - Android: `android/app/google-services.json`
+   - iOS: `ios/Runner/GoogleService-Info.plist`
 
 ## Cara Menjalankan
-1. Clone repository ini.
+1. Clone repository.
 2. Masuk ke folder project.
-3. Jalankan `flutter pub get`.
-4. Pastikan konfigurasi Firebase sudah benar:
-   - Android: `google-services.json`
-   - iOS: `GoogleService-Info.plist`
+3. Install dependency:
+   - `flutter pub get`
+4. Jalankan analisis kode:
+   - `flutter analyze`
 5. Jalankan aplikasi:
    - `flutter run`
 
-## Konfigurasi Firebase (Minimum)
-- Aktifkan Authentication (Email/Password).
-- Buat Cloud Firestore.
-- Buat Firebase Storage (jika menggunakan upload gambar).
-
-## Saran Lanjutan
-Untuk membawa aplikasi ke standar modern:
-1. Migrasi null safety penuh.
-2. Upgrade semua package Firebase ke versi terbaru.
-3. Ganti API lama yang sudah deprecated (`image_picker`, `permission_handler`, dsb).
-4. Tambahkan test unit/integration untuk bloc dan service.
+## Catatan
+- Folder generated seperti `ios/Flutter/ephemeral/` adalah normal dan dibuat otomatis oleh Flutter.
+- Pastikan konfigurasi Firebase sudah benar sebelum login/signup atau upload gambar.
 
 ## Lisensi
-Gunakan sesuai kebutuhan pembelajaran/pengembangan internal. Tambahkan file lisensi resmi jika project akan dipublikasikan ulang.
+Silakan gunakan untuk pembelajaran dan pengembangan internal. Jika ingin dipublikasikan ulang, tambahkan lisensi resmi sesuai kebutuhan.
