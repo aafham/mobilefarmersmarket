@@ -7,9 +7,8 @@ class CustomerBloc {
 
   //Get
   Stream<List<Market>> get fetchUpcomingMarkets => db.fetchUpcomingMarkets();
-  Stream<List<Product>> get fetchAvailableProducts => db.fetchAvailableProducts();
+  Stream<List<Product>> get fetchAvailableProducts =>
+      db.fetchAvailableProducts();
 
-  dispose(){
-    
-  }
+  dispose() {}
 }

@@ -1,5 +1,4 @@
 import 'package:farmers_market/src/models/location.dart';
-import 'package:flutter/foundation.dart';
 
 class Market {
   final String title;
@@ -9,21 +8,25 @@ class Market {
   final bool acceptingOrders;
   final String marketId;
 
-  Market ({
-    @required this.title,
-    @required this.dateBegin,
-    @required this.dateEnd,
-    @required this.location,
-    @required this.marketId,
-    this.acceptingOrders = false
+  Market({
+    required this.title,
+    required this.dateBegin,
+    required this.dateEnd,
+    required this.location,
+    required this.marketId,
+    this.acceptingOrders = false,
   });
 
-  Market.fromFirestore(Map<String, dynamic> firestore)
-    : title = firestore['title'],
-      dateBegin = firestore['dateBegin'],
-      dateEnd = firestore['dateEnd'],
-      location = Location.fromFirestore(firestore['location']),
-      marketId = firestore['marketId'],
-      acceptingOrders = firestore['acceptingOrders'];
-
+  factory Market.fromFirestore(Map<String, dynamic> firestore) {
+    return Market(
+      title: (firestore['title'] ?? '').toString(),
+      dateBegin: (firestore['dateBegin'] ?? '').toString(),
+      dateEnd: (firestore['dateEnd'] ?? '').toString(),
+      location: Location.fromFirestore(
+        (firestore['location'] as Map<String, dynamic>? ?? <String, dynamic>{}),
+      ),
+      marketId: (firestore['marketId'] ?? '').toString(),
+      acceptingOrders: (firestore['acceptingOrders'] ?? false) as bool,
+    );
+  }
 }

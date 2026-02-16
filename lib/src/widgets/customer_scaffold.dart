@@ -9,35 +9,33 @@ abstract class CustomerScaffold {
   static CupertinoTabScaffold get cupertinoTabScaffold {
     return CupertinoTabScaffold(
       tabBar: _cupertinoTabBar,
-      tabBuilder: (context, index) {
-        return _pageSelection(index);
-      },
+      tabBuilder: (context, index) => _pageSelection(index),
     );
   }
 
-  static get _cupertinoTabBar {
+  static CupertinoTabBar get _cupertinoTabBar {
     return CupertinoTabBar(
       backgroundColor: AppColors.darkblue,
-      items: <BottomNavigationBarItem>[
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.create), title: Text('Products')),
+          icon: Icon(CupertinoIcons.create),
+          label: 'Products',
+        ),
         BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.shoppingBag), title: Text('Orders')),
+          icon: Icon(FontAwesomeIcons.bagShopping),
+          label: 'Orders',
+        ),
         BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person), title: Text('Profile')),
+          icon: Icon(CupertinoIcons.person),
+          label: 'Profile',
+        ),
       ],
     );
   }
 
   static Widget _pageSelection(int index) {
-    if (index == 0) {
-      return ProductsCustomer();
-    }
-
-    if (index == 1) {
-      return ShoppingBag();
-    }
-
+    if (index == 0) return ProductsCustomer();
+    if (index == 1) return ShoppingBag();
     return ProfileCustomer();
   }
 }

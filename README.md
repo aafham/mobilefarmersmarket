@@ -1,41 +1,75 @@
-# Farmer's Market Mobile Ordering Application
+# Mobile Farmers Market
 
-This application will be similar to the Mobile Ordering system introduced by Walt Disney World where customers may place their order online and confirm their proximity to the market via location of the device.  The vendor can confirm their order accept payment by Stripe and let the customer know where they can pickup the order.  If desired, the vendor can confirm the customer by flashing the flash on their device.  The entire transaction can take place without any personal contact.
+Aplikasi Flutter untuk membantu pelanggan memesan produk pasar tani secara online, dan membantu vendor mengelola profil serta produk.
 
-This will be an open source project and anyone is welcome to fork, clone and use the code for their own purposes.  The application is meant to be of public use and the development is intended for educational purposes for Flutter developers. Each episode in the series will be a branch in the repository. Episode 1 contains no coding and does not have a branch
+## Ringkasan Fitur
+- Login dan signup berbasis Firebase Authentication.
+- Data user, vendor, market, dan produk menggunakan Cloud Firestore.
+- Vendor dapat:
+  - membuat/mengubah profil,
+  - menambah/mengubah produk,
+  - upload foto produk/vendor.
+- Pelanggan dapat melihat daftar market yang akan datang dan produk yang tersedia.
 
-Concepts introduced in the development of the application will include: Firebase, Firestore, 3rd Party Authentication, push notifications, provider, rxdart, cupertino scaffolding, plugins, geocoding, Strip, and Google Maps (and maybe more). 
+## Status Proyek
+Proyek ini berasal dari seri tutorial lama dan masih menggunakan dependensi versi legacy.
 
-Development of the application will be documented on my YouTube channel https://www.youtube.com/channel/UCSKeK_8IzsqwKQBJuIGJPaA
+Kondisi saat ini:
+- Kode sudah diperbaiki untuk beberapa bug UI/UX dan validasi input.
+- Struktur project tetap dipertahankan agar kompatibel dengan implementasi awal.
+- Untuk menjalankan pada Flutter/Dart terbaru, diperlukan migrasi dependensi Firebase + null safety secara menyeluruh.
 
-## Getting Started
-To run the code beyond part 5 you will need to establish a firebase project, add an IOS and Android application using the Flutter instructions here https://firebase.google.com/docs/flutter/setup?authuser=0&platform=ios
+## Perbaikan Terbaru
+Perbaikan yang sudah diterapkan:
+- Memperbaiki bug struktur widget di `lib/src/widgets/card.dart` yang menyebabkan error build.
+- Merapikan `lib/src/widgets/products.dart` (menghapus kode duplikat/konflik dan memperjelas state loading/empty).
+- Menambahkan hardening validasi input di:
+  - `lib/src/blocs/product_bloc.dart`
+  - `lib/src/blocs/vendor_bloc.dart`
+- Meningkatkan ketahanan model vendor terhadap data null di `lib/src/models/vendor.dart`.
+- Menambahkan guard callback null pada `lib/src/widgets/textfield.dart`.
+- Menambahkan guard `userId` null pada `lib/src/blocs/auth_bloc.dart`.
 
-To run beyond part 18, add a Firestore database to your project with rules set to allow read, write: if request.auth.uid != null;  
-You will also need to enable email authentication in your firebase project.
+## Struktur Folder Utama
+- `lib/main.dart`: entry point aplikasi.
+- `lib/src/app.dart`: konfigurasi app, provider, dan routing utama.
+- `lib/src/blocs/`: business logic (auth, customer, product, vendor).
+- `lib/src/models/`: model data aplikasi.
+- `lib/src/screens/`: halaman utama (login, signup, landing, edit).
+- `lib/src/widgets/`: komponen UI reusable.
+- `lib/src/services/`: integrasi Firestore dan Firebase Storage.
+- `lib/src/styles/`: konfigurasi gaya, warna, teks, dan tombol.
 
+## Prasyarat
+- Flutter SDK (sesuai versi dependensi project).
+- Dart SDK.
+- Firebase project aktif (Android + iOS app sudah didaftarkan).
 
-## Episode History
+Catatan penting kompatibilitas:
+- `pubspec.yaml` saat ini masih mengarah ke dependency lama.
+- Jika menggunakan Flutter terbaru, jalankan migrasi bertahap sebelum build production.
 
-### Part 1: Application Concept (No Branch)
-### Part 2: App Setup and Routes
-### Part 3: App Platform Splitting
-### Part 4: Adding Firebase
-### Part 5: Login Flow (No Branch)
-### Part 6: Login UI
-### Part 7: Cupertino TextField (in Part8 branch)
-### Part 8: Material TextField
-### Part 9: Application TextField
-### Part 10: Application Buttons
-### Part 11: Social Media Buttons
-### Part 12: Signup UI
-### Part 13: Why RXDart? (no branch)
-### Part 14: TheAuth BLoC
-### Part 15: Material Validation
-### Part 16: Cupertino Validation
-### Part 17: Submit Button Revisited
-### Part 18: Adding the First User
-### Part 19: User Story Mapping
-### Part 20: Logging In
-### Part 21: IOS Sliver AppBar
+## Cara Menjalankan
+1. Clone repository ini.
+2. Masuk ke folder project.
+3. Jalankan `flutter pub get`.
+4. Pastikan konfigurasi Firebase sudah benar:
+   - Android: `google-services.json`
+   - iOS: `GoogleService-Info.plist`
+5. Jalankan aplikasi:
+   - `flutter run`
 
+## Konfigurasi Firebase (Minimum)
+- Aktifkan Authentication (Email/Password).
+- Buat Cloud Firestore.
+- Buat Firebase Storage (jika menggunakan upload gambar).
+
+## Saran Lanjutan
+Untuk membawa aplikasi ke standar modern:
+1. Migrasi null safety penuh.
+2. Upgrade semua package Firebase ke versi terbaru.
+3. Ganti API lama yang sudah deprecated (`image_picker`, `permission_handler`, dsb).
+4. Tambahkan test unit/integration untuk bloc dan service.
+
+## Lisensi
+Gunakan sesuai kebutuhan pembelajaran/pengembangan internal. Tambahkan file lisensi resmi jika project akan dipublikasikan ulang.

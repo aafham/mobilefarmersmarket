@@ -4,25 +4,29 @@ class Vendor {
   final String imageUrl;
   final String description;
 
-  Vendor({this.imageUrl, this.name, this.vendorId, this.description});
+  Vendor({
+    this.imageUrl = '',
+    this.name = '',
+    this.vendorId = '',
+    this.description = '',
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'vendorId': vendorId,
       'name': name,
       'imageUrl': imageUrl,
-      'description': description
+      'description': description,
     };
   }
 
-  factory Vendor.fromFirestore(Map<String, dynamic> firestore){
-    if (firestore == null) return null;
-
-    return Vendor(  
-      vendorId: firestore['vendorId'],
-      name: firestore['name'],
-      imageUrl: firestore ['imageUrl'],
-      description: firestore['description']
+  factory Vendor.fromFirestore(Map<String, dynamic>? firestore) {
+    final data = firestore ?? <String, dynamic>{};
+    return Vendor(
+      vendorId: data['vendorId'] ?? '',
+      name: data['name'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
+      description: data['description'] ?? '',
     );
   }
 }

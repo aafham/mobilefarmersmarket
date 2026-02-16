@@ -1,14 +1,12 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-class Orders extends StatelessWidget{
-
+class Orders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS){
-      return CupertinoPageScaffold( 
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
         child: pageBody(),
       );
     } else {
@@ -19,6 +17,8 @@ class Orders extends StatelessWidget{
   }
 
   Widget pageBody() {
-    return Center(child: Text('Orders'),);
+    return Center(
+      child: Text('Orders'),
+    );
   }
 }

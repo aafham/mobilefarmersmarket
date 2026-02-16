@@ -37,7 +37,7 @@ abstract class TextFieldStyles {
   }
 
   static InputDecoration materialDecoration(
-      String hintText, IconData icon, String errorText) {
+      String hintText, IconData icon, String? errorText) {
     return InputDecoration(
       contentPadding: EdgeInsets.all(8.0),
       hintText: hintText,

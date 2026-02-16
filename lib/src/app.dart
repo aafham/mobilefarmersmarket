@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:farmers_market/src/blocs/auth_bloc.dart';
 import 'package:farmers_market/src/blocs/customer_bloc.dart';
 import 'package:farmers_market/src/blocs/product_bloc.dart';
+import 'package:farmers_market/src/blocs/vendor_bloc.dart';
 import 'package:farmers_market/src/routes.dart';
 import 'package:farmers_market/src/screens/landing.dart';
 import 'package:farmers_market/src/screens/login.dart';
@@ -9,11 +12,8 @@ import 'package:farmers_market/src/styles/colors.dart';
 import 'package:farmers_market/src/styles/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
 import 'package:provider/provider.dart';
 
-import 'blocs/vendor_bloc.dart';
 final authBloc = AuthBloc();
 final productBloc = ProductBloc();
 final customerBloc = CustomerBloc();
@@ -22,7 +22,7 @@ final firestoreService = FirestoreService();
 
 class App extends StatefulWidget {
   @override
-  _AppState createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
 class _AppState extends State<App> {
@@ -30,14 +30,21 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => authBloc),
-        Provider(create: (context) => productBloc),
-        Provider(create: (context) => customerBloc,),
-        Provider(create: (context) => vendorBloc,),
-        FutureProvider(create: (context) => authBloc.isLoggedIn()),
-        StreamProvider(create: (context) => firestoreService.fetchUnitTypes())
+        Provider<AuthBloc>(create: (context) => authBloc),
+        Provider<ProductBloc>(create: (context) => productBloc),
+        Provider<CustomerBloc>(create: (context) => customerBloc),
+        Provider<VendorBloc>(create: (context) => vendorBloc),
+        FutureProvider<bool?>(
+          create: (context) => authBloc.isLoggedIn(),
+          initialData: null,
+        ),
+        StreamProvider<List<String>>(
+          create: (context) => firestoreService.fetchUnitTypes(),
+          initialData: const <String>[],
+        ),
       ],
-      child: PlatformApp());
+      child: PlatformApp(),
+    );
   }
 
   @override
@@ -51,37 +58,41 @@ class _AppState extends State<App> {
 }
 
 class PlatformApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
-    var isLoggedIn = Provider.of<bool>(context);
+    final isLoggedIn = Provider.of<bool?>(context);
 
     if (Platform.isIOS) {
       return CupertinoApp(
-        home: (isLoggedIn == null) ? loadingScreen(true) : (isLoggedIn == true ) ? Landing() : Login(),
+        home: (isLoggedIn == null)
+            ? loadingScreen(true)
+            : (isLoggedIn ? Landing() : Login()),
         onGenerateRoute: Routes.cupertinoRoutes,
-        theme: CupertinoThemeData(  
+        theme: CupertinoThemeData(
           primaryColor: AppColors.straw,
           scaffoldBackgroundColor: Colors.white,
-          textTheme: CupertinoTextThemeData(  
-            tabLabelTextStyle: TextStyles.suggestion
-          )
-        )
-      ); 
+          textTheme:
+              CupertinoTextThemeData(tabLabelTextStyle: TextStyles.suggestion),
+        ),
+      );
     } else {
       return MaterialApp(
-        home: (isLoggedIn == null) ? loadingScreen(false) : (isLoggedIn == true ) ? Landing() : Login(),
+        home: (isLoggedIn == null)
+            ? loadingScreen(false)
+            : (isLoggedIn ? Landing() : Login()),
         onGenerateRoute: Routes.materialRoutes,
-        theme: ThemeData(scaffoldBackgroundColor: Colors.white)
+        theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       );
     }
   }
 
-  Widget loadingScreen(bool isIOS){
-    return (isIOS)
-    ? CupertinoPageScaffold(child: Center(child: CupertinoActivityIndicator(),),)
-    : Scaffold(body: Center(child: CircularProgressIndicator()));
+  Widget loadingScreen(bool isIOS) {
+    return isIOS
+        ? CupertinoPageScaffold(
+            child: Center(child: CupertinoActivityIndicator()),
+          )
+        : Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
   }
-
 }
